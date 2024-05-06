@@ -1,0 +1,44 @@
+services:
+  ollama:
+    image: ollama/ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama:/root/.ollama
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+  open-webui:
+    image: ghcr.io/open-webui/open-webui:main
+    ports:
+      - "3000:8080"
+    volumes:
+      - open-webui:/app/backend/data
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    depends_on:
+      - ollama
+  anythingllm:
+    image: mintplexlabs/anythingllm
+    ports:
+      - "3001:3001"
+    volumes:
+      - ${STORAGE_LOCATION}:/app/server/storage
+      - ${STORAGE_LOCATION}/.env:/app/server/.env
+    environment:
+      - STORAGE_DIR:/app/server/storage
+    cap_add:
+      - SYS_ADMIN
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    depends_on:
+      - ollama
+
+
+volumes:
+  ollama:
+  open-webui:
