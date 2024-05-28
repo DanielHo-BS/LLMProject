@@ -4,7 +4,7 @@ services:
     ports:
       - "11434:11434"
     volumes:
-      - ollama:/root/.ollama
+      - ${STORAGE}/ollama:/root/.ollama
     deploy:
       resources:
         reservations:
@@ -17,7 +17,7 @@ services:
     ports:
       - "3000:8080"
     volumes:
-      - open-webui:/app/backend/data
+      - ${STORAGE}/openwebui:/app/backend/data
     extra_hosts:
       - "host.docker.internal:host-gateway"
     depends_on:
@@ -37,8 +37,3 @@ services:
       - "host.docker.internal:host-gateway"
     depends_on:
       - ollama
-
-
-volumes:
-  ollama:
-  open-webui:

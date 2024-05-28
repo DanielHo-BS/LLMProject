@@ -94,3 +94,17 @@ mintplexlabs/anythingllm
 ```
 
 - Open the web browser and go to `http://localhost:3001`
+
+## Using Docker Compose
+
+You can use the `docker-compose.yml` file to run the services.
+
+services:
+
+- Ollama
+- Open WebUI
+- AnythingLLN
+
+```bash
+docker-compose up -d
+```
